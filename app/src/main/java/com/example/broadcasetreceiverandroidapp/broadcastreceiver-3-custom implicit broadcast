@@ -1,0 +1,69 @@
+# MainActivity.java
+
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.os.Bundle;
+
+public class MainActivity extends AppCompatActivity {
+
+    private ExampleBroadcastReceiver exampleBroadcastReceiver =new ExampleBroadcastReceiver();
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        IntentFilter filter = new IntentFilter("com.example.EXAMPLE_ACTION");
+        registerReceiver(exampleBroadcastReceiver,filter);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(exampleBroadcastReceiver);
+    }
+
+
+
+
+}
+
+# ExampleBroadcastReceiver.java
+
+
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.widget.Toast;
+
+public class ExampleBroadcastReceiver extends BroadcastReceiver {
+
+
+
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+
+
+
+        if ("com.example.EXAMPLE_ACTION".equals(intent.getAction())) {
+
+           String receivedText = intent.getStringExtra("com.example.EXTRA_TEXT");
+            Toast.makeText(context, receivedText, Toast.LENGTH_SHORT).show();
+        }
+
+    }
+}
+
+
+
+// then create a new android project
+// i have created Mycustombroadcastreceiver project
+// see  that project how to implement that
+
+
+

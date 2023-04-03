@@ -1,0 +1,103 @@
+# activity_main.xml
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <TextView
+        android:id="@+id/text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Message"
+        android:textSize="20sp" />
+
+    <Button
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Send Broadcast"
+        android:onClick="sendBroadcast"
+        />
+
+</LinearLayout>
+
+# MainActivity.java
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity {
+
+    private TextView textView;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        textView = findViewById(R.id.text_view);
+
+
+    }
+
+    public void sendBroadcast(View view) {
+
+        Intent intent = new Intent("com.example.EXAMPLE_ACTION");
+//
+//        ComponentName cn = new ComponentName("com.example.broadcasetreceiverandroidapp",
+//                "com.example.broadcasetreceiverandroidapp.ExampleBroadcastReceiver");
+//        intent.setComponent(cn);
+
+
+
+        //intent.setClass(this,ExampleBroadcastReceiver2.class);
+
+//        intent.setClassName("com.example.broadcasetreceiverandroidapp",
+//                "com.example.broadcasetreceiverandroidapp.ExampleBroadcastReceiver");
+
+//        intent.setPackage("com.example.broadcasetreceiverandroidapp");
+
+        /*** using package manager ***/
+
+        PackageManager packageManager = getPackageManager();
+
+        List<ResolveInfo> infos = packageManager.queryBroadcastReceivers(intent,0);
+        for (ResolveInfo info : infos) {
+
+            ComponentName cn = new ComponentName(info.activityInfo.packageName,
+                    info.activityInfo.name);
+            intent.setComponent(cn);
+            sendBroadcast(intent);
+        }
+
+
+
+
+//        sendBroadcast(intent);
+
+    }
+
+
+
+
+}
+
+
+// see code in BroadCasetReceiverAndroidApp  code
